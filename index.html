@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>传动轴临界转速计算工具 · 式(4-44) · 汽车设计第4章</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1a5fa8;--blue2:#2e7dd1;--blue-lt:#e8f2fc;--blue-bg:#f0f6fd;
+  --green:#1a7a3c;--green-lt:#e6f5ec;
+  --red:#c0392b;--red-lt:#fdecea;
+  --orange:#c55a11;--orange-lt:#fdf3e6;
+  --amber:#b8860b;--amber-lt:#fef9e7;
+  --teal:#0e7490;--teal-lt:#e0f4f8;
+  --g1:#1c2b3a;--g2:#374a5c;--g3:#5a6e82;--g4:#8fa3b5;
+  --g5:#c8d6e0;--g6:#e8eff4;--g7:#f5f8fb;
+  --bg:#ecf2f8;--card:#fff;--r:10px;--sh:0 2px 14px rgba(0,0,0,.09)
+}
+body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);
+  color:var(--g1);min-height:100vh;padding:16px 13px 44px;font-size:14px;line-height:1.6}
+.wrap{max-width:1040px;margin:0 auto}
+
+.hdr{background:linear-gradient(135deg,#1a3a5c 0%,#1a5fa8 100%);color:#fff;
+  border-radius:var(--r);padding:20px 26px 16px;margin-bottom:14px;box-shadow:var(--sh)}
+.hdr h1{font-size:19px;font-weight:700;margin-bottom:3px}
+.hdr p{font-size:12.5px;opacity:.85}
+.hdr .tag{display:inline-block;background:rgba(255,255,255,.18);border-radius:4px;
+  padding:2px 9px;font-size:11.5px;margin-top:5px;margin-right:5px}
+
+/* formula strip */
+.fstrip{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.fcard{flex:1;min-width:260px;background:var(--card);border-radius:var(--r);
+  padding:14px 18px;box-shadow:var(--sh);border-top:3px solid var(--blue)}
+.fcard.teal{border-top-color:var(--teal)}
+.fcard h4{font-size:12px;color:var(--blue);font-weight:700;margin-bottom:7px}
+.fcard.teal h4{color:var(--teal)}
+.feq{font-size:14px;font-weight:700;color:var(--g1);text-align:center;padding:6px 0;line-height:2}
+.fdesc{font-size:11px;color:var(--g3);margin-top:7px;padding-top:7px;border-top:1px solid var(--g6)}
+
+/* layout */
+.cols{display:grid;grid-template-columns:350px 1fr;gap:13px;margin-bottom:13px}
+@media(max-width:800px){.cols{grid-template-columns:1fr}}
+
+.card{background:var(--card);border-radius:var(--r);padding:17px;box-shadow:var(--sh)}
+.card-h{font-size:13px;font-weight:700;color:var(--g2);margin-bottom:13px;
+  padding-bottom:7px;border-bottom:2px solid var(--blue-lt);display:flex;align-items:center;gap:6px}
+.icon-n{width:21px;height:21px;border-radius:50%;background:var(--blue);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+
+/* param groups */
+.group-label{font-size:11.5px;font-weight:700;color:var(--g4);text-transform:uppercase;
+  letter-spacing:.07em;margin:14px 0 8px;padding-top:10px;border-top:1px dashed var(--g5)}
+.group-label:first-child{margin-top:0;padding-top:0;border-top:none}
+
+.pr{margin-bottom:13px}.pr:last-child{margin-bottom:0}
+.pl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.pname{font-size:12.5px;color:var(--g2);font-weight:600}
+.pval{font-size:15px;font-weight:700;color:var(--blue)}
+.punit{font-size:10.5px;color:var(--g4);margin-left:2px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;
+  background:var(--g5);border-radius:3px;outline:none;cursor:pointer;margin-bottom:2px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+  width:17px;height:17px;border-radius:50%;background:var(--blue);border:2.5px solid #fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.22);cursor:pointer;transition:transform .15s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+.sticks{display:flex;justify-content:space-between;font-size:10px;color:var(--g4)}
+.pdesc{font-size:11px;color:var(--g4);margin-top:2px}
+
+/* result panel */
+.rpanel{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:13px}
+.rh{background:linear-gradient(90deg,#1a3a5c,#1a5fa8);color:#fff;
+  padding:12px 19px;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px}
+.rb{padding:17px 19px}
+
+.knums{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px}
+@media(max-width:540px){.knums{grid-template-columns:1fr 1fr}}
+.knum{background:var(--g7);border-radius:8px;padding:11px 7px;text-align:center}
+.knum.hi{border:2px solid var(--blue)}
+.knum .kl{font-size:10.5px;color:var(--g3);margin-bottom:3px}
+.knum .kv{font-size:20px;font-weight:700;color:var(--blue)}
+.knum .ku{font-size:10px;color:var(--g4)}
+
+.verdict{border-radius:8px;padding:12px 15px;display:flex;align-items:center;
+  gap:10px;margin-bottom:13px;font-weight:600}
+.verdict.pass{background:var(--green-lt);border:1.5px solid var(--green);color:var(--green)}
+.verdict.warn{background:var(--amber-lt);border:1.5px solid #c8a000;color:#7a5800}
+.verdict.fail{background:var(--red-lt);border:1.5px solid var(--red);color:var(--red)}
+.verdict .vi{font-size:24px;flex-shrink:0}
+.verdict .vt{font-size:13px;line-height:1.45}
+.verdict .vt b{font-size:14.5px}
+
+/* gauge */
+.gauge-wrap{margin-bottom:14px}
+.gauge-label{display:flex;justify-content:space-between;font-size:11.5px;color:var(--g3);margin-bottom:5px}
+.gauge-bg{height:24px;background:var(--g6);border-radius:12px;position:relative;overflow:visible}
+.gauge-track{height:100%;border-radius:12px;overflow:hidden;position:relative}
+.gauge-fill{height:100%;border-radius:12px;transition:width .4s ease,background .4s ease;
+  display:flex;align-items:center;justify-content:flex-end;padding-right:8px;
+  font-size:11px;font-weight:700;color:#fff;white-space:nowrap;min-width:0}
+.gauge-ref{position:absolute;top:0;height:100%;width:2px;background:rgba(0,0,0,.2);z-index:2}
+.gauge-ref-lbl{position:absolute;top:-18px;transform:translateX(-50%);
+  font-size:10px;white-space:nowrap;font-weight:600}
+
+/* proc */
+.proc{background:var(--g7);border-radius:8px;padding:12px 15px;font-size:12.5px}
+.proc .ph{font-weight:700;color:var(--g2);margin-bottom:8px}
+.proc-g{display:grid;grid-template-columns:1fr auto;gap:3px 12px;align-items:baseline}
+.proc-g .eq{color:var(--g2);font-size:12px}
+.proc-g .res{text-align:right;font-weight:700;color:var(--blue)}
+.proc-g .hl{color:var(--orange);font-weight:700}
+.proc-g .hlg{color:var(--green);font-weight:700}
+.proc-g .hlr{color:var(--red);font-weight:700}
+
+/* chart */
+.chart-card{background:var(--card);border-radius:var(--r);padding:17px;box-shadow:var(--sh);margin-bottom:13px}
+.chart-card h3{font-size:13px;font-weight:700;color:var(--g2);margin-bottom:11px;
+  padding-bottom:7px;border-bottom:2px solid var(--blue-lt)}
+.tabs{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:11px}
+.tab{padding:5px 12px;font-size:12px;border-radius:6px 6px 0 0;cursor:pointer;
+  border:1.5px solid var(--g5);background:var(--g7);color:var(--g3);
+  font-weight:600;border-bottom:none;transition:.15s}
+.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+canvas{display:block;width:100%!important}
+.cnote{text-align:center;font-size:11px;color:var(--g4);margin-top:6px}
+
+/* table */
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl th{background:var(--blue);color:#fff;padding:7px 8px;text-align:center;font-weight:600}
+.tbl td{padding:6px 8px;border-bottom:1px solid var(--g6);text-align:center}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:nth-child(even) td{background:var(--g7)}
+.tbl td.pass{color:var(--green);font-weight:700}
+.tbl td.warn{color:#7a5800;font-weight:700}
+.tbl td.fail{color:var(--red);font-weight:700}
+.tbl td.cur{background:#fff8e1!important;font-weight:700}
+
+.alert{border-radius:8px;padding:10px 14px;font-size:12.5px;margin-bottom:13px}
+.alert.info{background:var(--blue-lt);border:1px solid #a0c8f0;color:#1a3a5c}
+.alert.info b{color:var(--blue)}
+.footer{text-align:center;font-size:11px;color:var(--g4);margin-top:8px;
+  padding-top:9px;border-top:1px solid var(--g5)}
+
+/* wall thickness indicator */
+.wall-info{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.wall-badge{background:var(--teal-lt);border:1px solid #80cfe0;border-radius:5px;
+  padding:3px 9px;font-size:11.5px;color:var(--teal);font-weight:600}
+user-select: none
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- Header -->
+<div class="hdr">
+  <h1>🔩 传动轴临界转速计算工具</h1>
+  <p>基于《汽车设计》第6版 第四章 · 式(4-44) 临界转速 · 式(4-45) 扭转应力校核</p>
+  <span class="tag" id="layoutTag">FR后驱传动轴</span>
+  <span class="tag">离线版 · 无需联网</span>
+  <span class="tag">全参数实时交互</span>
+</div>
+
+<!-- Formula strip -->
+<div class="fstrip">
+  <div class="fcard">
+    <h4>📐 式(4-44) 传动轴临界转速</h4>
+    <div class="feq">
+      <i>n<sub>k</sub></i> = 1.2×10<sup>8</sup> ·
+      <span style="display:inline-block;text-align:center;vertical-align:middle;margin:0 4px">
+        <span style="display:block;border-bottom:2px solid #374a5c;padding:0 3px 1px">
+          √(<i>D<sub>c</sub></i>² + <i>d<sub>c</sub></i>²)
+        </span>
+        <span style="display:block;padding:1px 3px 0"><i>L<sub>c</sub></i>²</span>
+      </span>
+    </div>
+    <div class="fdesc">
+      n<sub>k</sub>—临界转速(r/min)；L<sub>c</sub>—支承长度(mm)，取两万向节中心距；
+      D<sub>c</sub>—轴管外径(mm)；d<sub>c</sub>—轴管内径(mm)
+    </div>
+  </div>
+  <div class="fcard teal">
+    <h4 style="color:var(--teal)">📐 式(4-45) 扭转应力校核</h4>
+    <div class="feq" style="font-size:13px">
+      <i>τ<sub>c</sub></i> =
+      <span style="display:inline-block;text-align:center;vertical-align:middle;margin:0 4px">
+        <span style="display:block;border-bottom:2px solid #374a5c;padding:0 3px 1px">16<i>D<sub>c</sub></i>·<i>T</i><sub>1</sub></span>
+        <span style="display:block;padding:1px 3px 0">π(<i>D<sub>c</sub></i>⁴−<i>d<sub>c</sub></i>⁴)</span>
+      </span>
+      ≤ [<i>τ<sub>c</sub></i>]
+    </div>
+    <div class="fdesc">T<sub>1</sub>—计算转矩(N·mm)；[τ<sub>c</sub>]—许用扭转应力，一般取 300 MPa</div>
+  </div>
+  <div class="fcard" style="border-top-color:var(--orange)">
+    <h4 style="color:var(--orange)">📐 安全系数判断</h4>
+    <div class="feq" style="font-size:15px">
+      <i>K</i> = <i>n<sub>k</sub></i> / <i>n<sub>max</sub></i>
+    </div>
+    <div class="fdesc">
+      K = 1.2~2.0（一般设计）；K = 1.2 用于精确动平衡、高精度伸花键及万向节间隙较小时。
+      n<sub>max</sub>—传动轴最高工作转速(r/min)；
+      <span id="nmaxFormulaNote">FR: n<sub>max</sub>=n<sub>e</sub>/i<sub>g</sub></span>
+    </div>
+  </div>
+</div>
+
+<!-- Info alert -->
+<div class="alert info">
+  <b>💡 使用说明：</b>
+  选择布置形式（FR / FF）后拖动滑块调整参数，实时查看临界转速 n<sub>k</sub>、安全系数 K 及扭转应力。
+  <b>FR：</b>n<sub>max</sub> = n<sub>e</sub>/i<sub>g</sub>；
+  <b>FF：</b>n<sub>max</sub> = n<sub>e</sub>/(i<sub>g</sub>×i<sub>0</sub>)。
+  <b>默认值：</b>FR典型参数，L<sub>c</sub>=1600mm，D<sub>c</sub>=70mm，d<sub>c</sub>=62mm，发动机6500rpm，5档i=0.8，主减i<sub>0</sub>=4.0
+</div>
+
+<!-- Main columns -->
+<div class="cols">
+
+  <!-- Left: Inputs -->
+  <div class="card">
+    <div class="card-h"><span class="icon-n">1</span>输入参数调节</div>
+
+    <div class="group-label">▍ 传动轴几何参数</div>
+
+    <div class="pr">
+      <div class="pl">
+        <span class="pname">支承长度 <i>L<sub>c</sub></i>（两万向节中心距）</span>
+        <span class="pval"><span id="v_Lc">1600</span><span class="punit">mm</span></span>
+      </div>
+      <input type="range" id="s_Lc" min="600" max="2200" step="10" value="1600"
+        oninput="sync('Lc',this.value)">
+      <div class="sticks"><span>600</span><span>1100</span><span>1600</span><span>2200</span></div>
+      <div class="pdesc">L<sub>c</sub> 对 n<sub>k</sub> 影响最大（平方反比）；超过1500mm建议分段</div>
+    </div>
+
+    <div class="pr">
+      <div class="pl">
+        <span class="pname">轴管外径 <i>D<sub>c</sub></i></span>
+        <span class="pval"><span id="v_Dc">70</span><span class="punit">mm</span></span>
+      </div>
+      <input type="range" id="s_Dc" min="40" max="120" step="1" value="70"
+        oninput="sync('Dc',this.value)">
+      <div class="sticks"><span>40</span><span>70</span><span>90</span><span>120</span></div>
+      <div class="pdesc">增大 D<sub>c</sub> 可显著提高 n<sub>k</sub>，但增加质量</div>
+    </div>
+
+    <div class="pr">
+      <div class="pl">
+        <span class="pname">轴管内径 <i>d<sub>c</sub></i></span>
+        <span class="pval"><span id="v_dc">62</span><span class="punit">mm</span></span>
+      </div>
+      <input type="range" id="s_dc" min="20" max="115" step="1" value="62"
+        oninput="sync('dc',this.value)">
+      <div class="sticks"><span>20</span><span>50</span><span>80</span><span>115</span></div>
+      <div class="pdesc">d<sub>c</sub> 须 &lt; D<sub>c</sub>；壁厚 = (D<sub>c</sub>−d<sub>c</sub>)/2，典型值 1.5~3.0mm</div>
+    </div>
+
+    <!-- wall thickness info -->
+    <div class="wall-info" id="wallInfo"></div>
+
+    <div class="group-label">▍ 布置形式</div>
+
+    <div class="pr" style="margin-bottom:10px">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;
+          background:var(--g7);border:2px solid var(--g5);border-radius:8px;
+          padding:7px 14px;font-size:13px;font-weight:600;transition:.15s"
+          id="lbl_FR">
+          <input type="radio" name="layout" value="FR" checked
+            onchange="setLayout('FR')" style="accent-color:var(--blue);width:15px;height:15px">
+          <span>FR（后轮驱动）</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;
+          background:var(--g7);border:2px solid var(--g5);border-radius:8px;
+          padding:7px 14px;font-size:13px;font-weight:600;transition:.15s"
+          id="lbl_FF">
+          <input type="radio" name="layout" value="FF"
+            onchange="setLayout('FF')" style="accent-color:var(--blue);width:15px;height:15px">
+          <span>FF（前轮驱动）</span>
+        </label>
+      </div>
+      <div class="pdesc" id="layoutDesc" style="margin-top:6px">
+        FR：传动轴位于变速器与后桥之间，n<sub>max</sub> = n<sub>e</sub> / i<sub>g</sub>
+      </div>
+    </div>
+
+    <div class="group-label">▍ 工作转速参数</div>
+
+    <div class="pr">
+      <div class="pl">
+        <span class="pname">发动机最高转速 <i>n<sub>e</sub></i></span>
+        <span class="pval"><span id="v_ne">6500</span><span class="punit">rpm</span></span>
+      </div>
+      <input type="range" id="s_ne" min="2000" max="9000" step="100" value="6500"
+        oninput="sync('ne',this.value)">
+      <div class="sticks"><span>2000</span><span>4000</span><span>6500</span><span>9000</span></div>
+    </div>
+
+    <div class="pr">
+      <div class="pl">
+        <span class="pname">最高档传动比 <i>i<sub>g</sub></i>（5档）</span>
+        <span class="pval"><span id="v_ig">0.80</span></span>
+      </div>
+      <input type="range" id="s_ig" min="0.5" max="4.0" step="0.05" value="0.80"
+        oninput="sync('ig',this.value)">
+      <div class="sticks"><span>0.5</span><span>1.0</span><span>2.0</span><span>4.0</span></div>
+      <div class="pdesc">超速档 &lt;1.0 时，传动轴转速 &gt; 发动机转速</div>
+    </div>
+
+    <div class="pr">
+      <div class="pl">
+        <span class="pname">主减速器传动比 <i>i<sub>0</sub></i></span>
+        <span class="pval"><span id="v_i0">4.0</span></span>
+      </div>
+      <input type="range" id="s_i0" min="2.0" max="6.0" step="0.1" value="4.0"
+        oninput="sync('i0',this.value)">
+      <div class="sticks"><span>2.0</span><span>3.5</span><span>5.0</span><span>6.0</span></div>
+      <div class="pdesc" id="i0Desc">FR布置：i<sub>0</sub> 不影响 n<sub>max</sub>（仅用于扭矩计算参考）</div>
+    </div>
+
+    <div class="group-label">▍ 扭矩参数（用于扭转应力校核）</div>
+
+    <div class="pr">
+      <div class="pl">
+        <span class="pname">计算转矩 <i>T<sub>1</sub></i></span>
+        <span class="pval"><span id="v_T1">1200</span><span class="punit">N·m</span></span>
+      </div>
+      <input type="range" id="s_T1" min="100" max="5000" step="50" value="1200"
+        oninput="sync('T1',this.value)">
+      <div class="sticks"><span>100</span><span>1200</span><span>2500</span><span>5000</span></div>
+      <div class="pdesc">T<sub>1</sub> = min(T<sub>ec</sub>, T<sub>cs</sub>)；典型乘用车 800~2000 N·m</div>
+    </div>
+  </div>
+
+  <!-- Right: Results -->
+  <div>
+    <div class="rpanel">
+      <div class="rh">📊 实时计算结果</div>
+      <div class="rb">
+
+        <div class="knums">
+          <div class="knum hi">
+            <div class="kl">临界转速 n<sub>k</sub></div>
+            <div class="kv" id="r_nk" style="font-size:22px">—</div>
+            <div class="ku">r/min</div>
+          </div>
+          <div class="knum">
+            <div class="kl">传动轴最高转速 n<sub>max</sub></div>
+            <div class="kv" id="r_nmax">—</div>
+            <div class="ku">r/min</div>
+          </div>
+          <div class="knum">
+            <div class="kl">安全系数 K</div>
+            <div class="kv" id="r_K">—</div>
+            <div class="ku">（要求 ≥ 1.2）</div>
+          </div>
+          <div class="knum">
+            <div class="kl">壁厚 t</div>
+            <div class="kv" id="r_wall">—</div>
+            <div class="ku">mm</div>
+          </div>
+          <div class="knum">
+            <div class="kl">扭转应力 τ<sub>c</sub></div>
+            <div class="kv" id="r_tau">—</div>
+            <div class="ku">MPa</div>
+          </div>
+          <div class="knum">
+            <div class="kl">√(D²+d²) / L²</div>
+            <div class="kv" id="r_geo" style="font-size:15px">—</div>
+            <div class="ku">×10⁻⁸</div>
+          </div>
+        </div>
+
+        <!-- Verdict -->
+        <div class="verdict" id="verdict">
+          <div class="vi" id="v_icon">—</div>
+          <div class="vt" id="v_text">请调整参数</div>
+        </div>
+
+        <!-- Gauge: nk vs nmax, max scale = 2.5×nmax -->
+        <div class="gauge-wrap">
+          <div class="gauge-label">
+            <span>0</span>
+            <span id="g_label">临界转速 / 工作转速可视化</span>
+            <span id="g_max">—</span>
+          </div>
+          <div class="gauge-bg">
+            <div class="gauge-track">
+              <div class="gauge-fill" id="gauge_nmax"></div>
+            </div>
+            <div class="gauge-ref" id="ref_nmax">
+              <div class="gauge-ref-lbl" id="ref_nmax_lbl" style="color:var(--red)">n<sub>max</sub></div>
+            </div>
+            <div class="gauge-ref" id="ref_nk">
+              <div class="gauge-ref-lbl" id="ref_nk_lbl" style="color:var(--blue)">n<sub>k</sub></div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--g4);margin-top:3px">
+            <span style="color:var(--red)">█ n<sub>max</sub>（传动轴最高工作转速）</span>
+            <span style="color:var(--blue)">│ n<sub>k</sub>（临界转速）</span>
+          </div>
+        </div>
+
+        <!-- Process -->
+        <div class="proc">
+          <div class="ph">逐步推导过程</div>
+          <div class="proc-g" id="proc_grid"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Chart -->
+<div class="chart-card">
+  <h3>📈 参数影响规律分析图</h3>
+  <div class="tabs" id="tabRow"></div>
+  <canvas id="mainChart" height="270"></canvas>
+  <div class="cnote" id="chartNote"></div>
+</div>
+
+<!-- Sensitivity table -->
+<div class="card" style="margin-bottom:13px">
+  <div class="card-h"><span class="icon-n">2</span>典型参数组合对比表</div>
+  <div style="overflow-x:auto">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>方案</th><th>L<sub>c</sub>(mm)</th><th>D<sub>c</sub>(mm)</th>
+          <th>d<sub>c</sub>(mm)</th><th>壁厚(mm)</th>
+          <th>n<sub>k</sub>(r/min)</th><th>n<sub>max</sub>(r/min)</th>
+          <th>K = n<sub>k</sub>/n<sub>max</sub></th><th>判断</th>
+        </tr>
+      </thead>
+      <tbody id="sensBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">
+  《汽车设计》第5版 · 闵海涛 王建华 编著 · 第四章 万向传动设计<br>
+  式(4-44) 传动轴临界转速 · 式(4-45) 扭转应力 · 安全系数 K = n<sub>k</sub>/n<sub>max</sub> ≥ 1.2
+</div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────────────────
+var P = {Lc:1600, Dc:70, dc:62, ne:6500, ig:0.80, i0:4.0, T1:1200, layout:'FR'};
+var TAB = 0;
+var FMT = {Lc:0, Dc:0, dc:0, ne:0, ig:2, i0:1, T1:0};
+
+// ── Layout switch ──────────────────────────────────────────────────────────
+function setLayout(v) {
+  P.layout = v;
+  var isFR = (v === 'FR');
+  // Highlight active label
+  document.getElementById('lbl_FR').style.borderColor = isFR ? 'var(--blue)' : 'var(--g5)';
+  document.getElementById('lbl_FR').style.background  = isFR ? 'var(--blue-lt)' : 'var(--g7)';
+  document.getElementById('lbl_FF').style.borderColor = !isFR ? 'var(--blue)' : 'var(--g5)';
+  document.getElementById('lbl_FF').style.background  = !isFR ? 'var(--blue-lt)' : 'var(--g7)';
+  // Update desc
+  document.getElementById('layoutDesc').innerHTML = isFR
+    ? 'FR：传动轴位于变速器与后桥之间，n<sub>max</sub> = n<sub>e</sub> / i<sub>g</sub>'
+    : 'FF：半轴位于变速器+主减之后，n<sub>max</sub> = n<sub>e</sub> / (i<sub>g</sub> × i<sub>0</sub>)';
+  document.getElementById('layoutTag').textContent = isFR ? 'FR后驱传动轴' : 'FF前驱传动轴';
+  var noteEl = document.getElementById('nmaxFormulaNote');
+  if (noteEl) noteEl.innerHTML = isFR
+    ? 'FR: n<sub>max</sub>=n<sub>e</sub>/i<sub>g</sub>'
+    : 'FF: n<sub>max</sub>=n<sub>e</sub>/(i<sub>g</sub>×i<sub>0</sub>)';
+  document.getElementById('i0Desc').innerHTML = isFR
+    ? 'FR布置：i<sub>0</sub> 不影响 n<sub>max</sub>（仅用于扭矩计算参考）'
+    : 'FF布置：i<sub>0</sub> 参与 n<sub>max</sub> 计算，i<sub>0</sub> 越大传动轴转速越低';
+  compute();
+}
+
+// ── Sync slider ────────────────────────────────────────────────────────────
+function sync(k, v) {
+  P[k] = parseFloat(v);
+  document.getElementById('v_'+k).textContent = parseFloat(v).toFixed(FMT[k]);
+  compute();
+}
+
+// ── Core calculation ───────────────────────────────────────────────────────
+function calcAll(p) {
+  var Dc = p.Dc, dc = p.dc, Lc = p.Lc;
+  var wall = (Dc - dc) / 2;
+  // nk = 1.2e8 * sqrt(Dc^2 + dc^2) / Lc^2   (all in mm, result in r/min)
+  var geo  = Math.sqrt(Dc*Dc + dc*dc) / (Lc*Lc);
+  var nk   = 1.2e8 * geo;
+  // nmax: FR = ne/ig；FF = ne/(ig*i0)
+  var nmax = (p.layout === 'FF') ? p.ne / (p.ig * p.i0) : p.ne / p.ig;
+  var K    = nk / nmax;
+  // torsional stress: τ = 16*Dc*T1 / (π*(Dc^4 - dc^4))  T1 in N·mm
+  var T1_Nmm = p.T1 * 1000; // N·m → N·mm
+  var tau  = (16 * Dc * T1_Nmm) / (Math.PI * (Math.pow(Dc,4) - Math.pow(dc,4)));
+  return {nk:nk, nmax:nmax, K:K, wall:wall, geo:geo, tau:tau};
+}
+
+// ── Verdict ────────────────────────────────────────────────────────────────
+function getVerdict(r, p) {
+  var msgs = [];
+  var cls = 'pass', icon = '✅';
+
+  // wall thickness check
+  if (p.dc >= p.Dc) {
+    return {cls:'fail', icon:'⛔', msg:'<b>内径 ≥ 外径，参数无效！</b> 请调整 d<sub>c</sub> < D<sub>c</sub>'};
+  }
+  if (r.wall < 1.5) {
+    cls = 'fail'; icon = '❌';
+    msgs.push('壁厚 '+r.wall.toFixed(1)+' mm &lt; 1.5 mm，<b>结构强度不足</b>');
+  } else if (r.wall > 4.0) {
+    msgs.push('壁厚 '+r.wall.toFixed(1)+' mm > 4.0 mm，偏厚，重量较大');
+  }
+
+  // K check
+  if (r.K < 1.2) {
+    cls = 'fail'; icon = '❌';
+    msgs.push('安全系数 K = '+r.K.toFixed(2)+' &lt; 1.2，<b>临界转速不满足要求，有共振风险！</b>');
+  } else if (r.K < 1.5) {
+    if (cls !== 'fail') { cls = 'warn'; icon = '⚠️'; }
+    msgs.push('安全系数 K = '+r.K.toFixed(2)+'，处于 1.2~1.5 之间，裕度偏小，建议提高至 1.5 以上');
+  } else {
+    msgs.push('安全系数 K = '+r.K.toFixed(2)+' ≥ 1.5，临界转速满足要求 ✓');
+  }
+
+  // τ check
+  if (r.tau > 300) {
+    if (cls !== 'fail') { cls = 'warn'; icon = (cls==='warn'?'⚠️':'⚠️'); }
+    msgs.push('扭转应力 τ = '+r.tau.toFixed(1)+' MPa &gt; [τ]=300 MPa，<b>扭转强度不足</b>');
+  } else {
+    msgs.push('扭转应力 τ = '+r.tau.toFixed(1)+' MPa ≤ 300 MPa ✓');
+  }
+
+  if (cls === 'pass' && msgs.length > 0) {
+    return {cls:'pass', icon:'✅', msg:'<b>设计满足要求！</b><br>' + msgs.join('；')};
+  }
+  return {cls:cls, icon:icon, msg:msgs.join('<br>')};
+}
+
+// ── Main compute ───────────────────────────────────────────────────────────
+function compute() {
+  var r = calcAll(P);
+
+  // Validate dc < Dc
+  if (P.dc >= P.Dc) {
+    document.getElementById('r_nk').textContent = '—';
+    document.getElementById('r_nmax').textContent = '—';
+    document.getElementById('r_K').textContent = '—';
+    document.getElementById('r_wall').textContent = '无效';
+    document.getElementById('r_tau').textContent = '—';
+    document.getElementById('r_geo').textContent = '—';
+    var vel2 = document.getElementById('verdict');
+    vel2.className = 'verdict fail';
+    document.getElementById('v_icon').textContent = '⛔';
+    document.getElementById('v_text').innerHTML = '<b>内径 ≥ 外径，参数无效！</b>请调整 d<sub>c</sub> &lt; D<sub>c</sub>';
+    return;
+  }
+
+  // Display key numbers
+  document.getElementById('r_nk').textContent   = Math.round(r.nk).toLocaleString();
+  document.getElementById('r_nmax').textContent = Math.round(r.nmax).toLocaleString();
+  document.getElementById('r_K').textContent    = r.K.toFixed(2);
+  document.getElementById('r_wall').textContent = r.wall.toFixed(1);
+  document.getElementById('r_tau').textContent  = r.tau.toFixed(1);
+  document.getElementById('r_geo').textContent  = (r.geo * 1e8).toFixed(4);
+
+  // Color K
+  var Kel = document.getElementById('r_K');
+  Kel.style.color = r.K >= 1.5 ? 'var(--green)' : r.K >= 1.2 ? 'var(--amber)' : 'var(--red)';
+
+  // Color tau
+  var tel = document.getElementById('r_tau');
+  tel.style.color = r.tau <= 300 ? 'var(--green)' : 'var(--red)';
+
+  // Wall info badges
+  var wallHtml = '<span class="wall-badge">壁厚 t = '+r.wall.toFixed(1)+' mm</span>';
+  wallHtml += '<span class="wall-badge">√(D²+d²) = '+Math.sqrt(P.Dc*P.Dc+P.dc*P.dc).toFixed(2)+' mm</span>';
+  document.getElementById('wallInfo').innerHTML = wallHtml;
+
+  // Verdict
+  var vd = getVerdict(r, P);
+  var vel = document.getElementById('verdict');
+  vel.className = 'verdict ' + vd.cls;
+  document.getElementById('v_icon').textContent = vd.icon;
+  document.getElementById('v_text').innerHTML   = vd.msg;
+
+  // Gauge: scale = 2×nk (show both nmax and nk)
+  var scale = Math.max(r.nk * 1.3, r.nmax * 1.3);
+  var pctMax  = Math.min(r.nmax / scale * 100, 99);
+  var pctNk   = Math.min(r.nk   / scale * 100, 99);
+  var gf = document.getElementById('gauge_nmax');
+  gf.style.width      = pctMax + '%';
+  gf.style.background = r.K >= 1.2
+    ? 'linear-gradient(90deg,#1a5fa8,#5ba3e0)'
+    : 'linear-gradient(90deg,#c0392b,#e74c3c)';
+  gf.textContent = Math.round(r.nmax).toLocaleString() + ' r/min';
+  document.getElementById('ref_nmax').style.left = pctMax + '%';
+  document.getElementById('ref_nmax_lbl').textContent = 'n\u2098\u2090\u2093 = ' + Math.round(r.nmax).toLocaleString();
+  document.getElementById('ref_nk').style.left   = pctNk + '%';
+  document.getElementById('ref_nk_lbl').textContent = 'n\u2096 = ' + Math.round(r.nk).toLocaleString();
+  document.getElementById('g_max').textContent   = Math.round(scale).toLocaleString() + ' r/min';
+  document.getElementById('g_label').textContent = 'n\u2096 = ' + Math.round(r.nk).toLocaleString() +
+    '  n\u2098\u2090\u2093 = ' + Math.round(r.nmax).toLocaleString() + '  K = ' + r.K.toFixed(2);
+
+  // Process derivation
+  var sqDDd = Math.sqrt(P.Dc*P.Dc + P.dc*P.dc);
+  var Lc2   = P.Lc * P.Lc;
+  var T1mm  = P.T1 * 1000;
+  var Dp4   = Math.pow(P.Dc, 4) - Math.pow(P.dc, 4);
+  var nmaxFormula = (P.layout === 'FF')
+    ? '④ n<sub>max</sub> = n<sub>e</sub>/(i<sub>g</sub>×i<sub>0</sub>) = '+P.ne+'/('+P.ig+'×'+P.i0+')'
+    : '④ n<sub>max</sub> = n<sub>e</sub>/i<sub>g</sub> = '+P.ne+'/'+P.ig;
+  document.getElementById('proc_grid').innerHTML =
+    '<span class="eq">① √(D<sub>c</sub>²+d<sub>c</sub>²) = √('+P.Dc+'²+'+P.dc+'²)</span>' +
+    '<span class="res">= '+sqDDd.toFixed(3)+' mm</span>' +
+    '<span class="eq">② L<sub>c</sub>² = '+P.Lc+'²</span>' +
+    '<span class="res">= '+Lc2.toLocaleString()+' mm²</span>' +
+    '<span class="eq">③ n<sub>k</sub> = 1.2×10⁸ × '+sqDDd.toFixed(3)+' / '+Lc2.toLocaleString()+'</span>' +
+    '<span class="res hl">= '+Math.round(r.nk).toLocaleString()+' r/min</span>' +
+    '<span class="eq">'+nmaxFormula+'</span>' +
+    '<span class="res">= '+r.nmax.toFixed(1)+' r/min</span>' +
+    '<span class="eq">⑤ K = n<sub>k</sub>/n<sub>max</sub> = '+Math.round(r.nk)+'/'+r.nmax.toFixed(1)+'</span>' +
+    '<span class="res '+(r.K>=1.2?'hlg':'hlr')+'">= '+r.K.toFixed(3)+' '+(r.K>=1.2?'✓ 满足':'✗ 不满足')+'</span>' +
+    '<span class="eq">⑥ τ<sub>c</sub> = 16×'+P.Dc+'×'+T1mm.toLocaleString()+' / [π×('+P.Dc+'⁴−'+P.dc+'⁴)]</span>' +
+    '<span class="res '+(r.tau<=300?'hlg':'hlr')+'">= '+r.tau.toFixed(2)+' MPa '+(r.tau<=300?'✓':'✗')+'</span>';
+
+  // Sensitivity table
+  buildTable(r);
+  drawChart();
+}
+
+// ── Sensitivity table ──────────────────────────────────────────────────────
+function buildTable() {
+  var scenarios = [
+    {label:'基准（当前值）', Lc:P.Lc, Dc:P.Dc, dc:P.dc, cur:true},
+    {label:'增大外径+5mm', Lc:P.Lc, Dc:P.Dc+5, dc:P.dc},
+    {label:'增大外径+10mm', Lc:P.Lc, Dc:P.Dc+10, dc:P.dc},
+    {label:'减小长度−100mm', Lc:P.Lc-100, Dc:P.Dc, dc:P.dc},
+    {label:'减小长度−200mm', Lc:P.Lc-200, Dc:P.Dc, dc:P.dc},
+    {label:'实心轴(dc=0)', Lc:P.Lc, Dc:P.Dc, dc:0},
+    {label:'加大壁厚(dc−4)', Lc:P.Lc, Dc:P.Dc, dc:Math.max(P.dc-4,0)},
+    {label:'减小壁厚(dc+4)', Lc:P.Lc, Dc:P.Dc, dc:Math.min(P.dc+4,P.Dc-2)},
+    {label:'长度+200mm', Lc:P.Lc+200, Dc:P.Dc, dc:P.dc},
+    {label:'分段（L/2）', Lc:P.Lc/2, Dc:P.Dc, dc:P.dc},
+  ];
+  var nmax = (P.layout === 'FF') ? P.ne / (P.ig * P.i0) : P.ne / P.ig;
+  var html = '';
+  scenarios.forEach(function(s) {
+    if (s.Lc <= 0 || s.dc >= s.Dc) return;
+    var q = Object.assign({}, P, {Lc:s.Lc, Dc:s.Dc, dc:s.dc});
+    var r2 = calcAll(q);
+    var K2 = r2.K;
+    var kc = K2 >= 1.5 ? 'pass' : K2 >= 1.2 ? 'warn' : 'fail';
+    var kl = K2 >= 1.5 ? '✅ 满足' : K2 >= 1.2 ? '⚠️ 偏小' : '❌ 不满足';
+    var wall2 = (s.Dc - s.dc) / 2;
+    var cur = s.cur ? ' cur' : '';
+    html += '<tr>';
+    html += '<td class="'+cur+'">'+s.label+'</td>';
+    html += '<td class="'+cur+'">'+s.Lc+'</td>';
+    html += '<td class="'+cur+'">'+s.Dc+'</td>';
+    html += '<td class="'+cur+'">'+s.dc+'</td>';
+    html += '<td class="'+cur+'">'+wall2.toFixed(1)+'</td>';
+    html += '<td class="'+cur+'">'+Math.round(r2.nk).toLocaleString()+'</td>';
+    html += '<td class="'+cur+'">'+Math.round(nmax).toLocaleString()+'</td>';
+    html += '<td class="'+kc+cur+'">'+K2.toFixed(2)+'</td>';
+    html += '<td class="'+kc+cur+'">'+kl+'</td>';
+    html += '</tr>';
+  });
+  document.getElementById('sensBody').innerHTML = html;
+}
+
+// ── Chart tabs ─────────────────────────────────────────────────────────────
+var TABS = [
+  {key:'Lc',  label:'L_c 对 n_k', min:400, max:2200, step:10, unit:'mm',
+   desc:'支承长度 L_c 对 n_k 影响最大（平方反比），L_c 增大1倍则 n_k 减小为原来的1/4'},
+  {key:'Dc',  label:'D_c 对 n_k', min:30, max:130, step:1, unit:'mm',
+   desc:'外径 D_c 增大，√(D²+d²) 增大，n_k 正比增大；增大外径是提高 n_k 的最直接手段'},
+  {key:'dc',  label:'d_c 对 n_k', min:0, max:null, step:1, unit:'mm',
+   desc:'内径 d_c 增大（壁厚减小），n_k 略有下降但变化小；空心轴与实心轴 n_k 相近，但可减重'},
+  {key:'ne',  label:'n_e 对 n_max', min:1000, max:9000, step:100, unit:'rpm',
+   desc:'发动机转速越高，传动轴工作转速越高，对 n_k 要求更严格'},
+  {key:'ig',  label:'i_g 对 n_max', min:0.5, max:4.0, step:0.05, unit:'',
+   desc:'最高档传动比越小（超速档），传动轴转速越高，n_max 越大，对 n_k 要求更严格'},
+];
+
+function buildTabRow() {
+  var html = '';
+  TABS.forEach(function(t, i) {
+    html += '<div class="tab'+(i===0?' active':'')+'" onclick="switchTab('+i+')">'+t.label+'</div>';
+  });
+  document.getElementById('tabRow').innerHTML = html;
+}
+
+function switchTab(i) {
+  TAB = i;
+  document.querySelectorAll('.tab').forEach(function(t,j){
+    t.className = 'tab' + (j===i?' active':'');
+  });
+  drawChart();
+}
+
+// ── Canvas chart ───────────────────────────────────────────────────────────
+function drawChart() {
+  var cfg = TABS[TAB];
+  var canvas = document.getElementById('mainChart');
+  var W = canvas.parentElement.clientWidth - 34;
+  canvas.width = W; canvas.height = 270;
+  var ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,W,270);
+
+  // max for dc tab
+  var xMin = cfg.min;
+  var xMax = cfg.key === 'dc' ? P.Dc - 1 : cfg.max;
+  if (xMax <= xMin) xMax = xMin + 1;
+  var range = xMax - xMin;
+  var steps = 100;
+
+  var xs = [], yNk = [], yNmax = [], yK = [];
+  for (var i = 0; i <= steps; i++) {
+    var xv = xMin + range * i / steps;
+    xs.push(xv);
+    var q = Object.assign({}, P);
+    q[cfg.key] = xv;
+    if (cfg.key === 'dc' && xv >= q.Dc) { yNk.push(null); yNmax.push(null); yK.push(null); continue; }
+    var r2 = calcAll(q);
+    yNk.push(r2.nk);
+    yNmax.push(r2.nmax);
+    yK.push(r2.K);
+  }
+
+  var pad = {top:34, right:18, bottom:44, left:70};
+  var cw = W - pad.left - pad.right;
+  var ch = 270 - pad.top - pad.bottom;
+
+  // Use K as secondary axis or nk as primary
+  var showK = (cfg.key === 'Lc' || cfg.key === 'Dc' || cfg.key === 'dc');
+  var primaryY = showK ? yK : yNmax.map(function(v){return v;});
+
+  var validY = (showK ? yK : yNk).filter(function(v){return v!==null;});
+  var yMin = 0;
+  var yMax = Math.max.apply(null, validY) * 1.2;
+  if (showK) { yMax = Math.max(yMax, 2.5); }
+
+  function px(xv){return pad.left+(xv-xMin)/range*cw;}
+  function py(yv){return pad.top+(1-(yv-yMin)/(yMax-yMin))*ch;}
+
+  // Grid
+  for (var gi = 0; gi <= 5; gi++) {
+    var gv = yMin + (yMax-yMin)*gi/5;
+    var gy = py(gv);
+    ctx.strokeStyle='#e0e8ef'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad.left,gy); ctx.lineTo(pad.left+cw,gy); ctx.stroke();
+    ctx.fillStyle='#8fa3b5'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(gv.toFixed(showK?2:0)+(showK?'':' rpm'), pad.left-4, gy+4);
+  }
+  for (var xi = 0; xi <= 6; xi++) {
+    var xv2 = xMin + range*xi/6;
+    var gx = px(xv2);
+    ctx.strokeStyle='#e0e8ef'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(gx,pad.top); ctx.lineTo(gx,pad.top+ch); ctx.stroke();
+    ctx.fillStyle='#8fa3b5'; ctx.font='11px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(xv2.toFixed(cfg.step<0.1?2:cfg.step<1?1:0), gx, pad.top+ch+16);
+  }
+
+  // K=1.2 and K=1.5 reference lines (only when showing K)
+  if (showK) {
+    [[1.2,'#c0392b','K=1.2（最小要求）'],[1.5,'#d4a017','K=1.5（推荐）']].forEach(function(ref){
+      var ry = py(ref[0]);
+      ctx.strokeStyle=ref[1]; ctx.lineWidth=1.5; ctx.setLineDash([5,3]);
+      ctx.beginPath(); ctx.moveTo(pad.left,ry); ctx.lineTo(pad.left+cw,ry); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle=ref[1]; ctx.font='bold 10.5px sans-serif'; ctx.textAlign='left';
+      ctx.fillText(ref[2], pad.left+3, ry-3);
+    });
+    // shade K >= 1.2
+    var y12 = py(1.2), y15 = py(1.5), y20 = py(yMax);
+    ctx.fillStyle='rgba(26,122,60,0.07)';
+    ctx.fillRect(pad.left, y20, cw, y15-y20);
+    ctx.fillStyle='rgba(212,168,0,0.07)';
+    ctx.fillRect(pad.left, y15, cw, y12-y15);
+    ctx.fillStyle='rgba(192,57,43,0.07)';
+    ctx.fillRect(pad.left, y12, cw, pad.top+ch-y12);
+  }
+
+  // Draw nk curve
+  if (showK) {
+    // draw K curve
+    ctx.strokeStyle='#1a5fa8'; ctx.lineWidth=2.8;
+    ctx.beginPath();
+    var started = false;
+    xs.forEach(function(xv3,i3){
+      if (yK[i3]===null) {started=false; return;}
+      if (!started) {ctx.moveTo(px(xv3),py(yK[i3])); started=true;}
+      else ctx.lineTo(px(xv3), py(yK[i3]));
+    });
+    ctx.stroke();
+  } else {
+    // draw nmax and nk
+    [[yNmax,'#c0392b'],[yNk,'#1a5fa8']].forEach(function(pair){
+      ctx.strokeStyle=pair[1]; ctx.lineWidth=2.5;
+      ctx.beginPath();
+      var st2=false;
+      xs.forEach(function(xv3,i3){
+        if(pair[0][i3]===null){st2=false;return;}
+        if(!st2){ctx.moveTo(px(xv3),py(pair[0][i3]));st2=true;}
+        else ctx.lineTo(px(xv3),py(pair[0][i3]));
+      });
+      ctx.stroke();
+    });
+  }
+
+  // Current value dot
+  var curX = P[cfg.key];
+  if (cfg.key === 'dc') curX = Math.min(curX, P.Dc - 1);
+  if (curX >= xMin && curX <= xMax) {
+    var curQ2 = Object.assign({},P); curQ2[cfg.key]=curX;
+    var curR  = calcAll(curQ2);
+    var curYv = showK ? curR.K : curR.nmax;
+    ctx.fillStyle='#d4691e';
+    ctx.beginPath(); ctx.arc(px(curX),py(curYv),7,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#fff';
+    ctx.beginPath(); ctx.arc(px(curX),py(curYv),3,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#d4691e'; ctx.font='bold 11px sans-serif'; ctx.textAlign='center';
+    var lx=px(curX); if(lx>W-70)lx=W-60;
+    ctx.fillText(curYv.toFixed(showK?2:0)+(showK?'':' rpm'),lx,py(curYv)-12);
+  }
+
+  // Axes
+  ctx.strokeStyle='#8fa3b5'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(pad.left,pad.top); ctx.lineTo(pad.left,pad.top+ch);
+  ctx.lineTo(pad.left+cw,pad.top+ch); ctx.stroke();
+
+  // Labels
+  ctx.fillStyle='#374a5c'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center';
+  var xLabel = cfg.key==='dc'?'内径 d_c (mm)':cfg.label.split(' 对 ')[0]+(cfg.unit?' ('+cfg.unit+')':'');
+  ctx.fillText(xLabel, pad.left+cw/2, 270-5);
+  ctx.save(); ctx.translate(13,pad.top+ch/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText(showK?'安全系数 K':'转速 (r/min)', 0, 0); ctx.restore();
+
+  ctx.fillStyle='#1a3a5c'; ctx.font='bold 13px sans-serif'; ctx.textAlign='center';
+  ctx.fillText(cfg.label.replace('_','').replace('_','')+'的影响', pad.left+cw/2, pad.top-10);
+
+  // Legend
+  ctx.font='10.5px sans-serif'; ctx.textAlign='left';
+  if (showK) {
+    ctx.fillStyle='#1a5fa8'; ctx.fillRect(pad.left,pad.top+ch+26,16,3);
+    ctx.fillStyle='#374a5c'; ctx.fillText('安全系数 K', pad.left+20, pad.top+ch+30);
+    ctx.fillStyle='#1a7a3c'; ctx.fillRect(pad.left+120,pad.top+ch+26,16,3);
+    ctx.fillText('满足区(K≥1.5)', pad.left+140, pad.top+ch+30);
+    ctx.fillStyle='#c0392b'; ctx.fillRect(pad.left+260,pad.top+ch+26,16,3);
+    ctx.fillText('不满足(K<1.2)', pad.left+280, pad.top+ch+30);
+  } else {
+    ctx.fillStyle='#c0392b'; ctx.fillRect(pad.left,pad.top+ch+26,16,3);
+    ctx.fillStyle='#374a5c'; ctx.fillText('n_max（工作转速）', pad.left+20, pad.top+ch+30);
+    ctx.fillStyle='#1a5fa8'; ctx.fillRect(pad.left+180,pad.top+ch+26,16,3);
+    ctx.fillText('n_k（临界转速）', pad.left+200, pad.top+ch+30);
+  }
+
+  document.getElementById('chartNote').textContent = cfg.desc;
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
+buildTabRow();
+window.addEventListener('resize', function(){drawChart();});
+setLayout('FR');
+compute();
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+if (e.key === 'F12' || 
+(e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+(e.ctrlKey && e.key === 'U') ||
+(e.ctrlKey && e.key === 'S')) {
+e.preventDefault();
+return false;
+}
+});
+
+</script>
+<script>
+  document.addEventListener('contextmenu', e => e.preventDefault());
+  document.addEventListener('keydown', e => {
+    if (e.key === 'F12' || 
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+        (e.ctrlKey && e.key === 'U') ||
+        (e.ctrlKey && e.key === 'S')) {
+      e.preventDefault();
+      return false;
+    }
+  });
+</script>
+
+</body>
+</html>
