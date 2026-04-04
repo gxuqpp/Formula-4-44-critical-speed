@@ -18,116 +18,126 @@
   --bg:#ecf2f8;--card:#fff;--r:10px;--sh:0 2px 14px rgba(0,0,0,.09)
 }
 body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);
-  color:var(--g1);min-height:100vh;padding:16px 13px 44px;font-size:14px;line-height:1.6}
+  color:var(--g1);min-height:100vh;padding:16px 13px 44px;font-size:16px;line-height:1.65}
 .wrap{max-width:1040px;margin:0 auto}
 
 .hdr{background:linear-gradient(135deg,#1a3a5c 0%,#1a5fa8 100%);color:#fff;
-  border-radius:var(--r);padding:20px 26px 16px;margin-bottom:14px;box-shadow:var(--sh)}
-.hdr h1{font-size:19px;font-weight:700;margin-bottom:3px}
-.hdr p{font-size:12.5px;opacity:.85}
+  border-radius:var(--r);padding:22px 28px 18px;margin-bottom:14px;box-shadow:var(--sh)}
+.hdr h1{font-size:24px;font-weight:700;margin-bottom:4px}
+.hdr p{font-size:15px;opacity:.88}
 .hdr .tag{display:inline-block;background:rgba(255,255,255,.18);border-radius:4px;
-  padding:2px 9px;font-size:11.5px;margin-top:5px;margin-right:5px}
+  padding:3px 11px;font-size:13px;margin-top:6px;margin-right:5px}
 
 /* formula strip */
 .fstrip{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
 .fcard{flex:1;min-width:260px;background:var(--card);border-radius:var(--r);
-  padding:14px 18px;box-shadow:var(--sh);border-top:3px solid var(--blue)}
+  padding:15px 18px;box-shadow:var(--sh);border-top:3px solid var(--blue)}
 .fcard.teal{border-top-color:var(--teal)}
-.fcard h4{font-size:12px;color:var(--blue);font-weight:700;margin-bottom:7px}
+.fcard h4{font-size:14px;color:var(--blue);font-weight:700;margin-bottom:8px}
 .fcard.teal h4{color:var(--teal)}
-.feq{font-size:14px;font-weight:700;color:var(--g1);text-align:center;padding:6px 0;line-height:2}
-.fdesc{font-size:11px;color:var(--g3);margin-top:7px;padding-top:7px;border-top:1px solid var(--g6)}
+.feq{font-size:17px;font-weight:700;color:var(--g1);text-align:center;padding:7px 0;line-height:2.2}
+.fdesc{font-size:13px;color:var(--g3);margin-top:8px;padding-top:8px;border-top:1px solid var(--g6)}
 
 /* layout */
-.cols{display:grid;grid-template-columns:350px 1fr;gap:13px;margin-bottom:13px}
+.cols{display:grid;grid-template-columns:380px 1fr;gap:13px;margin-bottom:13px}
 @media(max-width:800px){.cols{grid-template-columns:1fr}}
 
-.card{background:var(--card);border-radius:var(--r);padding:17px;box-shadow:var(--sh)}
-.card-h{font-size:13px;font-weight:700;color:var(--g2);margin-bottom:13px;
-  padding-bottom:7px;border-bottom:2px solid var(--blue-lt);display:flex;align-items:center;gap:6px}
-.icon-n{width:21px;height:21px;border-radius:50%;background:var(--blue);color:#fff;
-  display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.card{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--sh)}
+.card-h{font-size:15px;font-weight:700;color:var(--g2);margin-bottom:14px;
+  padding-bottom:8px;border-bottom:2px solid var(--blue-lt);display:flex;align-items:center;gap:7px}
+.icon-n{width:24px;height:24px;border-radius:50%;background:var(--blue);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
 
 /* param groups */
-.group-label{font-size:11.5px;font-weight:700;color:var(--g4);text-transform:uppercase;
-  letter-spacing:.07em;margin:14px 0 8px;padding-top:10px;border-top:1px dashed var(--g5)}
+.group-label{font-size:13px;font-weight:700;color:var(--g4);text-transform:uppercase;
+  letter-spacing:.07em;margin:15px 0 9px;padding-top:11px;border-top:1px dashed var(--g5)}
 .group-label:first-child{margin-top:0;padding-top:0;border-top:none}
 
-.pr{margin-bottom:13px}.pr:last-child{margin-bottom:0}
-.pl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
-.pname{font-size:12.5px;color:var(--g2);font-weight:600}
-.pval{font-size:15px;font-weight:700;color:var(--blue)}
-.punit{font-size:10.5px;color:var(--g4);margin-left:2px}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;
-  background:var(--g5);border-radius:3px;outline:none;cursor:pointer;margin-bottom:2px}
+.pr{margin-bottom:14px}.pr:last-child{margin-bottom:0}
+.pl{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;gap:8px}
+.pname{font-size:14px;color:var(--g2);font-weight:600;flex:1}
+.pval{font-size:17px;font-weight:700;color:var(--blue);white-space:nowrap}
+.punit{font-size:12px;color:var(--g4);margin-left:3px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:7px;
+  background:var(--g5);border-radius:4px;outline:none;cursor:pointer;margin-bottom:3px}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
-  width:17px;height:17px;border-radius:50%;background:var(--blue);border:2.5px solid #fff;
+  width:19px;height:19px;border-radius:50%;background:var(--blue);border:2.5px solid #fff;
   box-shadow:0 1px 4px rgba(0,0,0,.22);cursor:pointer;transition:transform .15s}
 input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
-.sticks{display:flex;justify-content:space-between;font-size:10px;color:var(--g4)}
-.pdesc{font-size:11px;color:var(--g4);margin-top:2px}
+.sticks{display:flex;justify-content:space-between;font-size:12px;color:var(--g4)}
+.pdesc{font-size:13px;color:var(--g4);margin-top:3px}
+
+/* free-entry number input */
+.num-inp{
+  border:1.5px solid var(--blue2);border-radius:7px;padding:3px 7px;
+  font-size:18px;font-weight:700;color:var(--blue);
+  background:#eef5ff;outline:none;width:110px;text-align:right;
+  -moz-appearance:textfield;appearance:textfield;
+  transition:border-color .15s,background .15s}
+.num-inp:focus{border-color:var(--red);background:#fff;color:var(--red)}
+.num-inp::-webkit-outer-spin-button,.num-inp::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 
 /* result panel */
 .rpanel{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;margin-bottom:13px}
 .rh{background:linear-gradient(90deg,#1a3a5c,#1a5fa8);color:#fff;
-  padding:12px 19px;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px}
-.rb{padding:17px 19px}
+  padding:13px 20px;font-size:16px;font-weight:700;display:flex;align-items:center;gap:7px}
+.rb{padding:18px 20px}
 
-.knums{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px}
+.knums{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}
 @media(max-width:540px){.knums{grid-template-columns:1fr 1fr}}
-.knum{background:var(--g7);border-radius:8px;padding:11px 7px;text-align:center}
+.knum{background:var(--g7);border-radius:9px;padding:13px 8px;text-align:center}
 .knum.hi{border:2px solid var(--blue)}
-.knum .kl{font-size:10.5px;color:var(--g3);margin-bottom:3px}
-.knum .kv{font-size:20px;font-weight:700;color:var(--blue)}
-.knum .ku{font-size:10px;color:var(--g4)}
+.knum .kl{font-size:13px;color:var(--g3);margin-bottom:4px}
+.knum .kv{font-size:26px;font-weight:700;color:var(--blue)}
+.knum .ku{font-size:12px;color:var(--g4)}
 
-.verdict{border-radius:8px;padding:12px 15px;display:flex;align-items:center;
-  gap:10px;margin-bottom:13px;font-weight:600}
+.verdict{border-radius:9px;padding:14px 17px;display:flex;align-items:center;
+  gap:12px;margin-bottom:14px;font-weight:600}
 .verdict.pass{background:var(--green-lt);border:1.5px solid var(--green);color:var(--green)}
 .verdict.warn{background:var(--amber-lt);border:1.5px solid #c8a000;color:#7a5800}
 .verdict.fail{background:var(--red-lt);border:1.5px solid var(--red);color:var(--red)}
-.verdict .vi{font-size:24px;flex-shrink:0}
-.verdict .vt{font-size:13px;line-height:1.45}
-.verdict .vt b{font-size:14.5px}
+.verdict .vi{font-size:30px;flex-shrink:0}
+.verdict .vt{font-size:15px;line-height:1.5}
+.verdict .vt b{font-size:17px}
 
 /* gauge */
-.gauge-wrap{margin-bottom:14px}
-.gauge-label{display:flex;justify-content:space-between;font-size:11.5px;color:var(--g3);margin-bottom:5px}
-.gauge-bg{height:24px;background:var(--g6);border-radius:12px;position:relative;overflow:visible}
-.gauge-track{height:100%;border-radius:12px;overflow:hidden;position:relative}
-.gauge-fill{height:100%;border-radius:12px;transition:width .4s ease,background .4s ease;
-  display:flex;align-items:center;justify-content:flex-end;padding-right:8px;
-  font-size:11px;font-weight:700;color:#fff;white-space:nowrap;min-width:0}
+.gauge-wrap{margin-bottom:15px}
+.gauge-label{display:flex;justify-content:space-between;font-size:13px;color:var(--g3);margin-bottom:6px}
+.gauge-bg{height:26px;background:var(--g6);border-radius:13px;position:relative;overflow:visible}
+.gauge-track{height:100%;border-radius:13px;overflow:hidden;position:relative}
+.gauge-fill{height:100%;border-radius:13px;transition:width .4s ease,background .4s ease;
+  display:flex;align-items:center;justify-content:flex-end;padding-right:10px;
+  font-size:13px;font-weight:700;color:#fff;white-space:nowrap;min-width:0}
 .gauge-ref{position:absolute;top:0;height:100%;width:2px;background:rgba(0,0,0,.2);z-index:2}
-.gauge-ref-lbl{position:absolute;top:-18px;transform:translateX(-50%);
-  font-size:10px;white-space:nowrap;font-weight:600}
+.gauge-ref-lbl{position:absolute;top:-20px;transform:translateX(-50%);
+  font-size:12px;white-space:nowrap;font-weight:600}
 
 /* proc */
-.proc{background:var(--g7);border-radius:8px;padding:12px 15px;font-size:12.5px}
-.proc .ph{font-weight:700;color:var(--g2);margin-bottom:8px}
-.proc-g{display:grid;grid-template-columns:1fr auto;gap:3px 12px;align-items:baseline}
-.proc-g .eq{color:var(--g2);font-size:12px}
-.proc-g .res{text-align:right;font-weight:700;color:var(--blue)}
+.proc{background:var(--g7);border-radius:9px;padding:14px 17px;font-size:14px}
+.proc .ph{font-weight:700;color:var(--g2);margin-bottom:9px;font-size:15px}
+.proc-g{display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:baseline}
+.proc-g .eq{color:var(--g2);font-size:14px}
+.proc-g .res{text-align:right;font-weight:700;color:var(--blue);font-size:14px}
 .proc-g .hl{color:var(--orange);font-weight:700}
 .proc-g .hlg{color:var(--green);font-weight:700}
 .proc-g .hlr{color:var(--red);font-weight:700}
 
 /* chart */
-.chart-card{background:var(--card);border-radius:var(--r);padding:17px;box-shadow:var(--sh);margin-bottom:13px}
-.chart-card h3{font-size:13px;font-weight:700;color:var(--g2);margin-bottom:11px;
-  padding-bottom:7px;border-bottom:2px solid var(--blue-lt)}
-.tabs{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:11px}
-.tab{padding:5px 12px;font-size:12px;border-radius:6px 6px 0 0;cursor:pointer;
+.chart-card{background:var(--card);border-radius:var(--r);padding:18px;box-shadow:var(--sh);margin-bottom:13px}
+.chart-card h3{font-size:15px;font-weight:700;color:var(--g2);margin-bottom:12px;
+  padding-bottom:8px;border-bottom:2px solid var(--blue-lt)}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px}
+.tab{padding:6px 14px;font-size:14px;border-radius:6px 6px 0 0;cursor:pointer;
   border:1.5px solid var(--g5);background:var(--g7);color:var(--g3);
   font-weight:600;border-bottom:none;transition:.15s}
 .tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 canvas{display:block;width:100%!important}
-.cnote{text-align:center;font-size:11px;color:var(--g4);margin-top:6px}
+.cnote{text-align:center;font-size:13px;color:var(--g4);margin-top:7px}
 
 /* table */
-.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
-.tbl th{background:var(--blue);color:#fff;padding:7px 8px;text-align:center;font-weight:600}
-.tbl td{padding:6px 8px;border-bottom:1px solid var(--g6);text-align:center}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{background:var(--blue);color:#fff;padding:9px 10px;text-align:center;font-weight:600}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--g6);text-align:center}
 .tbl tr:last-child td{border-bottom:none}
 .tbl tr:nth-child(even) td{background:var(--g7)}
 .tbl td.pass{color:var(--green);font-weight:700}
@@ -135,16 +145,16 @@ canvas{display:block;width:100%!important}
 .tbl td.fail{color:var(--red);font-weight:700}
 .tbl td.cur{background:#fff8e1!important;font-weight:700}
 
-.alert{border-radius:8px;padding:10px 14px;font-size:12.5px;margin-bottom:13px}
+.alert{border-radius:9px;padding:12px 16px;font-size:14px;margin-bottom:14px}
 .alert.info{background:var(--blue-lt);border:1px solid #a0c8f0;color:#1a3a5c}
 .alert.info b{color:var(--blue)}
-.footer{text-align:center;font-size:11px;color:var(--g4);margin-top:8px;
-  padding-top:9px;border-top:1px solid var(--g5)}
+.footer{text-align:center;font-size:13px;color:var(--g4);margin-top:9px;
+  padding-top:10px;border-top:1px solid var(--g5)}
 
 /* wall thickness indicator */
-.wall-info{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
-.wall-badge{background:var(--teal-lt);border:1px solid #80cfe0;border-radius:5px;
-  padding:3px 9px;font-size:11.5px;color:var(--teal);font-weight:600}
+.wall-info{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px}
+.wall-badge{background:var(--teal-lt);border:1px solid #80cfe0;border-radius:6px;
+  padding:4px 11px;font-size:13px;color:var(--teal);font-weight:600}
 user-select: none
 </style>
 </head>
@@ -154,7 +164,7 @@ user-select: none
 <!-- Header -->
 <div class="hdr">
   <h1>🔩 传动轴临界转速计算工具</h1>
-  <p>基于《汽车设计》第6版 第四章 · 式(4-44) 临界转速 · 式(4-45) 扭转应力校核</p>
+  <p>基于《汽车设计》第5版 第四章 · 式(4-44) 临界转速 · 式(4-45) 扭转应力校核</p>
   <span class="tag" id="layoutTag">FR后驱传动轴</span>
   <span class="tag">离线版 · 无需联网</span>
   <span class="tag">全参数实时交互</span>
@@ -224,7 +234,7 @@ user-select: none
     <div class="pr">
       <div class="pl">
         <span class="pname">支承长度 <i>L<sub>c</sub></i>（两万向节中心距）</span>
-        <span class="pval"><span id="v_Lc">1600</span><span class="punit">mm</span></span>
+        <span class="pval"><input type="number" class="num-inp" id="v_Lc" value="1600" step="10" oninput="syncFree('Lc',this.value)"><span class="punit">mm</span></span>
       </div>
       <input type="range" id="s_Lc" min="600" max="2200" step="10" value="1600"
         oninput="sync('Lc',this.value)">
@@ -235,7 +245,7 @@ user-select: none
     <div class="pr">
       <div class="pl">
         <span class="pname">轴管外径 <i>D<sub>c</sub></i></span>
-        <span class="pval"><span id="v_Dc">70</span><span class="punit">mm</span></span>
+        <span class="pval"><input type="number" class="num-inp" id="v_Dc" value="70" step="1" oninput="syncFree('Dc',this.value)"><span class="punit">mm</span></span>
       </div>
       <input type="range" id="s_Dc" min="40" max="120" step="1" value="70"
         oninput="sync('Dc',this.value)">
@@ -246,7 +256,7 @@ user-select: none
     <div class="pr">
       <div class="pl">
         <span class="pname">轴管内径 <i>d<sub>c</sub></i></span>
-        <span class="pval"><span id="v_dc">62</span><span class="punit">mm</span></span>
+        <span class="pval"><input type="number" class="num-inp" id="v_dc" value="62" step="1" oninput="syncFree('dc',this.value)"><span class="punit">mm</span></span>
       </div>
       <input type="range" id="s_dc" min="20" max="115" step="1" value="62"
         oninput="sync('dc',this.value)">
@@ -288,7 +298,7 @@ user-select: none
     <div class="pr">
       <div class="pl">
         <span class="pname">发动机最高转速 <i>n<sub>e</sub></i></span>
-        <span class="pval"><span id="v_ne">6500</span><span class="punit">rpm</span></span>
+        <span class="pval"><input type="number" class="num-inp" id="v_ne" value="6500" step="100" oninput="syncFree('ne',this.value)"><span class="punit">rpm</span></span>
       </div>
       <input type="range" id="s_ne" min="2000" max="9000" step="100" value="6500"
         oninput="sync('ne',this.value)">
@@ -298,7 +308,7 @@ user-select: none
     <div class="pr">
       <div class="pl">
         <span class="pname">最高档传动比 <i>i<sub>g</sub></i>（5档）</span>
-        <span class="pval"><span id="v_ig">0.80</span></span>
+        <span class="pval"><input type="number" class="num-inp" id="v_ig" value="0.80" step="0.01" oninput="syncFree('ig',this.value)"></span>
       </div>
       <input type="range" id="s_ig" min="0.5" max="4.0" step="0.05" value="0.80"
         oninput="sync('ig',this.value)">
@@ -309,7 +319,7 @@ user-select: none
     <div class="pr">
       <div class="pl">
         <span class="pname">主减速器传动比 <i>i<sub>0</sub></i></span>
-        <span class="pval"><span id="v_i0">4.0</span></span>
+        <span class="pval"><input type="number" class="num-inp" id="v_i0" value="4.0" step="0.1" oninput="syncFree('i0',this.value)"></span>
       </div>
       <input type="range" id="s_i0" min="2.0" max="6.0" step="0.1" value="4.0"
         oninput="sync('i0',this.value)">
@@ -322,7 +332,7 @@ user-select: none
     <div class="pr">
       <div class="pl">
         <span class="pname">计算转矩 <i>T<sub>1</sub></i></span>
-        <span class="pval"><span id="v_T1">1200</span><span class="punit">N·m</span></span>
+        <span class="pval"><input type="number" class="num-inp" id="v_T1" value="1200" step="50" oninput="syncFree('T1',this.value)"><span class="punit">N·m</span></span>
       </div>
       <input type="range" id="s_T1" min="100" max="5000" step="50" value="1200"
         oninput="sync('T1',this.value)">
@@ -475,8 +485,26 @@ function setLayout(v) {
 
 // ── Sync slider ────────────────────────────────────────────────────────────
 function sync(k, v) {
-  P[k] = parseFloat(v);
-  document.getElementById('v_'+k).textContent = parseFloat(v).toFixed(FMT[k]);
+  var val = parseFloat(v);
+  if (isNaN(val)) return;
+  P[k] = val;
+  // Update number input to match slider
+  var inp = document.getElementById('v_'+k);
+  if (inp && inp.tagName === 'INPUT') inp.value = val.toFixed(FMT[k]);
+  compute();
+}
+
+// Free-entry from number field: accept any value, clamp slider thumb only
+function syncFree(k, v) {
+  var val = parseFloat(v);
+  if (isNaN(val) || v === '' || v === '-') return;
+  P[k] = val;
+  // Move slider thumb to nearest clamped position (visual only)
+  var sl = document.getElementById('s_'+k);
+  if (sl) {
+    var lo = parseFloat(sl.min), hi = parseFloat(sl.max);
+    sl.value = Math.min(Math.max(val, lo), hi);
+  }
   compute();
 }
 
@@ -750,7 +778,7 @@ function drawChart() {
     var gy = py(gv);
     ctx.strokeStyle='#e0e8ef'; ctx.lineWidth=1;
     ctx.beginPath(); ctx.moveTo(pad.left,gy); ctx.lineTo(pad.left+cw,gy); ctx.stroke();
-    ctx.fillStyle='#8fa3b5'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillStyle='#8fa3b5'; ctx.font='13px sans-serif'; ctx.textAlign='right';
     ctx.fillText(gv.toFixed(showK?2:0)+(showK?'':' rpm'), pad.left-4, gy+4);
   }
   for (var xi = 0; xi <= 6; xi++) {
@@ -758,8 +786,8 @@ function drawChart() {
     var gx = px(xv2);
     ctx.strokeStyle='#e0e8ef'; ctx.lineWidth=1;
     ctx.beginPath(); ctx.moveTo(gx,pad.top); ctx.lineTo(gx,pad.top+ch); ctx.stroke();
-    ctx.fillStyle='#8fa3b5'; ctx.font='11px sans-serif'; ctx.textAlign='center';
-    ctx.fillText(xv2.toFixed(cfg.step<0.1?2:cfg.step<1?1:0), gx, pad.top+ch+16);
+    ctx.fillStyle='#8fa3b5'; ctx.font='13px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(xv2.toFixed(cfg.step<0.1?2:cfg.step<1?1:0), gx, pad.top+ch+18);
   }
 
   // K=1.2 and K=1.5 reference lines (only when showing K)
@@ -769,8 +797,8 @@ function drawChart() {
       ctx.strokeStyle=ref[1]; ctx.lineWidth=1.5; ctx.setLineDash([5,3]);
       ctx.beginPath(); ctx.moveTo(pad.left,ry); ctx.lineTo(pad.left+cw,ry); ctx.stroke();
       ctx.setLineDash([]);
-      ctx.fillStyle=ref[1]; ctx.font='bold 10.5px sans-serif'; ctx.textAlign='left';
-      ctx.fillText(ref[2], pad.left+3, ry-3);
+      ctx.fillStyle=ref[1]; ctx.font='bold 12px sans-serif'; ctx.textAlign='left';
+      ctx.fillText(ref[2], pad.left+3, ry-4);
     });
     // shade K >= 1.2
     var y12 = py(1.2), y15 = py(1.5), y20 = py(yMax);
@@ -820,7 +848,7 @@ function drawChart() {
     ctx.beginPath(); ctx.arc(px(curX),py(curYv),7,0,Math.PI*2); ctx.fill();
     ctx.fillStyle='#fff';
     ctx.beginPath(); ctx.arc(px(curX),py(curYv),3,0,Math.PI*2); ctx.fill();
-    ctx.fillStyle='#d4691e'; ctx.font='bold 11px sans-serif'; ctx.textAlign='center';
+    ctx.fillStyle='#d4691e'; ctx.font='bold 13px sans-serif'; ctx.textAlign='center';
     var lx=px(curX); if(lx>W-70)lx=W-60;
     ctx.fillText(curYv.toFixed(showK?2:0)+(showK?'':' rpm'),lx,py(curYv)-12);
   }
@@ -831,17 +859,17 @@ function drawChart() {
   ctx.lineTo(pad.left+cw,pad.top+ch); ctx.stroke();
 
   // Labels
-  ctx.fillStyle='#374a5c'; ctx.font='bold 12px sans-serif'; ctx.textAlign='center';
+  ctx.fillStyle='#374a5c'; ctx.font='bold 14px sans-serif'; ctx.textAlign='center';
   var xLabel = cfg.key==='dc'?'内径 d_c (mm)':cfg.label.split(' 对 ')[0]+(cfg.unit?' ('+cfg.unit+')':'');
   ctx.fillText(xLabel, pad.left+cw/2, 270-5);
-  ctx.save(); ctx.translate(13,pad.top+ch/2); ctx.rotate(-Math.PI/2);
+  ctx.save(); ctx.translate(14,pad.top+ch/2); ctx.rotate(-Math.PI/2);
   ctx.fillText(showK?'安全系数 K':'转速 (r/min)', 0, 0); ctx.restore();
 
-  ctx.fillStyle='#1a3a5c'; ctx.font='bold 13px sans-serif'; ctx.textAlign='center';
+  ctx.fillStyle='#1a3a5c'; ctx.font='bold 15px sans-serif'; ctx.textAlign='center';
   ctx.fillText(cfg.label.replace('_','').replace('_','')+'的影响', pad.left+cw/2, pad.top-10);
 
   // Legend
-  ctx.font='10.5px sans-serif'; ctx.textAlign='left';
+  ctx.font='13px sans-serif'; ctx.textAlign='left';
   if (showK) {
     ctx.fillStyle='#1a5fa8'; ctx.fillRect(pad.left,pad.top+ch+26,16,3);
     ctx.fillStyle='#374a5c'; ctx.fillText('安全系数 K', pad.left+20, pad.top+ch+30);
